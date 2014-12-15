@@ -1,53 +1,42 @@
-﻿using eShopping.Common.Converter;
+﻿// Decompiled with JetBrains decompiler
+// Type: TransformIsysContent.Rtf2Html
+// Assembly: TransformIsysContent, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
+// MVID: 7B7B55B2-4BEE-4296-A03C-F1D93238EF33
+// Assembly location: D:\Users\lreveillere\Desktop\Shared_Folder\Projects\DCNS\Import_Isys\DCNS-Isys-Bin-2014_06_18\bin\TransformIsysContent.exe
+
+using eShopping.Common.Converter;
 using System;
-using System.Collections.Generic;
 using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace TransformIsysContent
 {
     public class Rtf2Html
     {
-
-        /// <summary>
-        /// Create an .html file that is the transformed rtf file.
-        /// Test of Git 2
-        /// </summary>
-        /// <param name="documentPath">Complete path of the rtf file that will be converted</param>
         public static void ConvertRtfToHTML(string documentPath)
         {
             try
             {
                 string generatedPath = Path.ChangeExtension(documentPath, "html");
-                ConvertRtfToHTML(documentPath, generatedPath);
+                Rtf2Html.ConvertRtfToHTML(documentPath, generatedPath);
             }
-            catch (Exception exception)
+            catch (Exception ex)
             {
-                Console.WriteLine("A problem has occured : " + exception.ToString());
+                Console.WriteLine("A problem has occured : " + ex.ToString());
                 Console.WriteLine("A problem has occured : The program will terminate now");
             }
         }
 
-        /// <summary>
-        /// Create an .html file that is the transformed rtf file.
-        /// </summary>
-        /// <param name="documentPath">Complete path of the rtf file that will be converted.</param>
-        /// <param name="generatedPath">Complete path of the html file that will be created.</param>
         public static void ConvertRtfToHTML(string documentPath, string generatedPath)
         {
             try
             {
-                IConverter doc = ConverterLocator.Converter(documentPath, generatedPath);
-                doc.Convert();
+                ConverterLocator.Converter(documentPath, generatedPath).Convert();
             }
-            catch (Exception exception)
+            catch (Exception ex)
             {
-                Console.WriteLine("A problem has occured : " + exception.ToString());
+                Console.WriteLine("A problem has occured : " + ex.ToString());
                 Console.WriteLine("A problem has occured : The program will terminate without converting the file now");
             }
         }
-
     }
 }

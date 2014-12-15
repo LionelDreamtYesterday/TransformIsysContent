@@ -59,14 +59,5 @@ namespace eShopping.Common.Converter
             return null;
         }
 
-        /*
-         * The original code was made for a webserver 
-         * The files produced were only displayed and not stored on it
-         * We need to keep them now, so this portion of code is commented.
-        ~DocToHtml()
-        {
-            base.DeleteFiles();
-        }
-         */
     }
 }

@@ -12,7 +12,7 @@ namespace eShopping.Common.Converter
     using System.Text;
 
     /// <summary>
-    /// TODO: Update summary.
+    /// The Converter interface only have one method.
     /// </summary>
     public interface IConverter
     {
