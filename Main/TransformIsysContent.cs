@@ -23,7 +23,7 @@ namespace TransformIsysContent
         {
             DateTime startTime = DateTime.Now;
             string version = System.Reflection.Assembly.GetExecutingAssembly().GetName().Version.ToString();
-            Console.WriteLine("TransformIsysContent v " + version + " --- Convert the content of an isys file to html.");
+            Console.WriteLine("TransformIsysContent v " + version + " (2014_12_15) --- Convert the content of an isys file to html.");
             printVersion();
             Console.WriteLine("You have entered " + args.Length + " arguments.");
             if (args.Length == 3)
