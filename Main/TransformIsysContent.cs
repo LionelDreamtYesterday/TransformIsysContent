@@ -13,6 +13,9 @@ namespace TransformIsysContent
 {
     public class Program
     { 
+        /**
+         * Entry of the program. Test of git.
+         */
         public static void Main(string[] args)
         {
             DateTime startTime = DateTime.Now;
