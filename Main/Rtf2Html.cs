@@ -13,6 +13,7 @@ namespace TransformIsysContent
 
         /// <summary>
         /// Create an .html file that is the transformed rtf file.
+        /// Test of Git 2
         /// </summary>
         /// <param name="documentPath">Complete path of the rtf file that will be converted</param>
         public static void ConvertRtfToHTML(string documentPath)
