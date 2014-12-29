@@ -73,16 +73,23 @@ namespace TransformIsysContent.Gzip
         }
       }
     }
-
+    
+    /// <summary>
+    /// NON IMPLEMENTED METHOD
+    /// </summary>
+    /// <param name="sCompressedFile"></param>
+    /// <param name="sDir"></param>
+    /// <param name="progress"></param>
     private static void DecompressToDirectory(string sCompressedFile, string sDir, GZip.ProgressDelegate progress)
     {
       using (FileStream fileStream = new FileStream(sCompressedFile, FileMode.Open, FileAccess.Read, FileShare.None))
       {
         using (GZipStream zipStream = new GZipStream((Stream) fileStream, CompressionMode.Decompress, true))
         {
-          do
-            ;
-          while (GZip.DecompressFile(sDir, zipStream, progress));
+            throw new NotImplementedException("This method has not been implemented yet.");
+            // while (GZip.DecompressFile(sDir, zipStream, progress));
+            // do
+            // ;
         }
       }
     }
