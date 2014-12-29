@@ -114,7 +114,6 @@
     <Compile Include="Main\Rtf2Html.cs" />
     <Compile Include="Main\TransformIsysContent.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="XmlOperations\OldXmlOperations.cs" />
     <Compile Include="XmlOperations\XmlOperations.cs" />
   </ItemGroup>
   <ItemGroup>

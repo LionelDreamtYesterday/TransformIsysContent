@@ -83,10 +83,10 @@ namespace TransformIsysContent.XML_Node_Replacement
                             nb_images++;
                             string attributeValue = htmlNodeImg.GetAttributeValue("src", null);
                             string sourceFileName = directoryName + Path.DirectorySeparatorChar + Path.GetDirectoryName(attributeValue) + Path.DirectorySeparatorChar + Path.GetFileName(attributeValue);
-                            string str2 = "Image-" + nodeNumber + "_" + nb_images + Path.GetExtension(attributeValue);
-                            string str3 = Path.GetDirectoryName(attributeValue) + Path.DirectorySeparatorChar + str2;
-                            string destFileName = directoryName + (object)Path.DirectorySeparatorChar + str3;
-                            htmlNodeImg.SetAttributeValue("src", str3);
+                            string imageFileName = "Image-" + nodeNumber + "_" + nb_images + Path.GetExtension(attributeValue);
+                            string imagePathName = Path.GetDirectoryName(attributeValue) + Path.DirectorySeparatorChar + imageFileName;
+                            string destFileName = directoryName + (object)Path.DirectorySeparatorChar + imagePathName;
+                            htmlNodeImg.SetAttributeValue("src", imagePathName);
                             try
                             {
                                 File.Copy(sourceFileName, destFileName, true);
@@ -128,7 +128,7 @@ namespace TransformIsysContent.XML_Node_Replacement
             Console.WriteLine("Number of imported elements : " + nb_ok + "/" + elementsByTagName.Count);
             Console.WriteLine("Number of non-imported elements : " + nb_erreurs + "/" + elementsByTagName.Count);
 
-            Console.WriteLine("Number of images that will be imported: " + nb_images_imported + "on a total number of images of " + nb_images);
+            Console.WriteLine("Number of images that will be imported: " + nb_images_imported + " (on a total number of " + nb_images + " images).");
             xmlDocument.Save(outputFilePath);
         }
     }
