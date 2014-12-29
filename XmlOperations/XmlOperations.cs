@@ -16,6 +16,12 @@ namespace TransformIsysContent.XML_Node_Replacement
     public class XmlOperations
     {
         private static string xhtml_namespace = "xmlns=\"http://www.w3.org/1999/xhtml\"";
+        private static string div_empty = "<div " + xhtml_namespace + " />";
+        private static string str_error_message = "<b><u> <span style=\"color: red;\">"
+            + "CAREFUL ! THERE WAS AN ERROR WHEN THIS ITEM WAS IMPORTED INTO INTEGRITY !"
+            + "Please ask your administrator to check the Isys importer logs in order to find the original RTF Content."
+            + "</span></u></b>";
+        private static string div_error = "<div " + xhtml_namespace + ">" + str_error_message + "</div>";
 
         /// <summary>
         /// Find the content node of the isys file.
@@ -29,7 +35,6 @@ namespace TransformIsysContent.XML_Node_Replacement
         /// <param name="filePath">"file.xml"</param>
         public static void NodeContentReplacement(string inputFilePath, string outputFilePath)
         {
-            Console.WriteLine("Appel du nouveau code - 2014_12_29");
             int nodeNumber = 0; int nb_ok = 0; int nb_erreurs = 0;
             int nb_images = 0; int nb_images_imported = 0;
             string directoryName = Path.GetDirectoryName(outputFilePath);
@@ -94,7 +99,7 @@ namespace TransformIsysContent.XML_Node_Replacement
                             }
                             catch (Exception ex)
                             {
-                                Console.WriteLine("\r\n" + "The move of the image number" + nb_images + " of the node number " + nodeNumber + " has failed.");
+                                Console.WriteLine("The move of the image number" + nb_images + " of the node number " + nodeNumber + " has failed.");
                                 Console.WriteLine(ex);
                             }
                         }
@@ -116,12 +121,8 @@ namespace TransformIsysContent.XML_Node_Replacement
                 }
                 catch (Exception exception)
                 {
-                    // If we cannot translate the node then we replace it by an empty one
-                    //TODO Ajouter le contenu original dans un dossier temporaire
                     nb_erreurs++;
-                    Console.WriteLine("The element number " + nodeNumber + "has not been imported because there was an error.");
-                    Console.WriteLine("The error was: " + exception);
-                    xmlNode.InnerXml = "<div " + xhtml_namespace + " />";
+                    xmlNode.InnerXml = XmlOperations.ElementNotConvertedError(nodeNumber, exception, outputFilePath + ".rtf");
                 }
             }
             Console.WriteLine("");
@@ -131,6 +132,32 @@ namespace TransformIsysContent.XML_Node_Replacement
             Console.WriteLine("Number of images that will be imported: " + nb_images_imported + " (on a total number of " + nb_images + " images).");
             xmlDocument.Save(outputFilePath);
         }
-    }
 
+        /// <summary>
+        /// A function whose work is to log what is the error about and keep a trace of what has gone wrong.
+        /// If we cannot translate the node then we replace it by one that explicitely states that there is an error.
+        /// TODO : Add the original content in a temporary folder.
+        /// </summary>
+        /// <param name="nodeNumber">The number of the element that count not be imported</param>
+        /// <param name="exception">The stack of the exception for error analysis</param>
+        /// <param name="filePath">The filepath of the element that could not be converted</param>
+        /// <returns></returns>
+        private static string ElementNotConvertedError(int nodeNumber, Exception exception, String filePath)
+        {
+            Console.WriteLine("The element number " + nodeNumber + "has not been imported because there was an error.");
+            Console.WriteLine("The error was: " + exception);
+            string filePath2=""; //TODO
+            try
+            {
+                File.Copy(filePath, filePath2, true);
+                Console.WriteLine("A copy of the RTF element node was made at this path :" + filePath2);
+            }
+            catch(Exception ex)
+            {
+                Console.WriteLine("There was a try to save a copy of the RTF element Node but there was an error : " + ex);
+            }
+            return div_error;
+        }
+
+    }// end of the XmlOperations class
 }
