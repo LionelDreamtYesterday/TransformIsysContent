@@ -23,6 +23,19 @@ namespace TransformIsysContent.XML_Node_Replacement
             + "</span></u></b>";
         private static string div_error = "<div " + xhtml_namespace + ">" + str_error_message + "</div>";
 
+
+        /// <summary>
+        /// Create the third argument from the second one.
+        /// Create the error directory if this one does not exist.
+        /// </summary>
+        /// <param name="inputFilePath">"inputFilePath.isys"</param>
+        /// <param name="outputFilePath">"outputFilePath.xml"</param>
+        public static void NodeContentReplacement(string inputFilePath, string outputFilePath)
+        {
+            string errorDirectoryPath = Path.GetDirectoryName(outputFilePath) + Path.DirectorySeparatorChar + "error" ;
+            NodeContentReplacement(inputFilePath, outputFilePath, errorDirectoryPath);
+        }
+
         /// <summary>
         /// Find the content node of the isys file.
         /// Take the node and put it in a string in order to avoir XML content problems.
@@ -32,8 +45,10 @@ namespace TransformIsysContent.XML_Node_Replacement
         ///     4) Convert it from RTF to HTML
         ///     5) Replace it in the XML (with a good namespace and without error)
         /// </summary>
-        /// <param name="filePath">"file.xml"</param>
-        public static void NodeContentReplacement(string inputFilePath, string outputFilePath)
+        /// <param name="inputFilePath">"inputFilePath.isys"</param>
+        /// <param name="outputFilePath">"outputFilePath.xml"</param>
+        /// <param name="errorDirectoryPath">"C:\errorDirectoryPath"</param>
+        public static void NodeContentReplacement(string inputFilePath, string outputFilePath, string errorDirectoryPath)
         {
             int nodeNumber = 0; int nb_ok = 0; int nb_erreurs = 0;
             int nb_images = 0; int nb_images_imported = 0;
@@ -122,7 +137,8 @@ namespace TransformIsysContent.XML_Node_Replacement
                 catch (Exception exception)
                 {
                     nb_erreurs++;
-                    xmlNode.InnerXml = XmlOperations.ElementNotConvertedError(nodeNumber, exception, outputFilePath + ".rtf");
+                    String errorPath = errorDirectoryPath + Path.DirectorySeparatorChar + outputFilePath + ".rtf";
+                    xmlNode.InnerXml = XmlOperations.ElementNotConvertedError(nodeNumber, exception, outputFilePath + ".rtf", errorPath);
                 }
             }
             Console.WriteLine("");
@@ -142,15 +158,14 @@ namespace TransformIsysContent.XML_Node_Replacement
         /// <param name="exception">The stack of the exception for error analysis</param>
         /// <param name="filePath">The filepath of the element that could not be converted</param>
         /// <returns></returns>
-        private static string ElementNotConvertedError(int nodeNumber, Exception exception, String filePath)
+        private static string ElementNotConvertedError(int nodeNumber, Exception exception, String filePath, String errorPath)
         {
             Console.WriteLine("The element number " + nodeNumber + "has not been imported because there was an error.");
             Console.WriteLine("The error was: " + exception);
-            string filePath2=""; //TODO
             try
             {
-                File.Copy(filePath, filePath2, true);
-                Console.WriteLine("A copy of the RTF element node was made at this path :" + filePath2);
+                File.Copy(filePath, errorPath, true);
+                Console.WriteLine("A copy of the RTF element node was made at this path :" + errorPath);
             }
             catch(Exception ex)
             {

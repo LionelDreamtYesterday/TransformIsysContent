@@ -21,19 +21,28 @@ namespace TransformIsysContent
             Console.WriteLine("You have entered " + (object)args.Length + " arguments.");
             if (args.Length == 3)
             {
+                /*
                 if (args[0] == "rtf2html")
                     Rtf2Html.ConvertRtfToHTML(args[1]);
                 else if (args[0] == "content2html")
                     XmlOperations.NodeContentReplacement(args[1], args[2]);
+                 */
+                XmlOperations.NodeContentReplacement(args[0], Program.getRootPath(args[1]), Program.getRootPath(args[2]));
             }
             else if (args.Length == 2)
             {
                 XmlOperations.NodeContentReplacement(args[0], Program.getRootPath(args[1]));
             }
+            // We can use this tool for converting only one RTF file to HTML
+            // (Useful for debugging)
+            else if (args.Length == 1)
+            {
+                Rtf2Html.ConvertRtfToHTML(args[1]);
+            }
             else
             {
-                Console.WriteLine("The command takes one or two file paths as arguments.");
-                Console.WriteLine("Usage :  TransformIsysContent file.isys [file.xml]");
+                Console.WriteLine("The command takes one, two or three file paths as arguments.");
+                Console.WriteLine("Usage :  TransformIsysContent file.isys [file.xml] [error_folder]");
             }
             DateTime.Now.Subtract(now);
         }
