@@ -37,7 +37,7 @@ namespace TransformIsysContent
             // (Useful for debugging)
             else if (args.Length == 1)
             {
-                Rtf2Html.ConvertRtfToHTML(args[1]);
+                Rtf2Html.ConvertRtfToHTML(args[0]);
             }
             else
             {
