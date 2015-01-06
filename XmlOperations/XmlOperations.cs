@@ -132,9 +132,15 @@ namespace TransformIsysContent.XML_Node_Replacement
                     str_divHTML = str_divHTML.Replace("<div class=\"WordSection1\">", "<div " + xhtml_namespace + " >");
                     str_divHTML = str_divHTML.Replace("<div class=\"Section1\">", "<div " + xhtml_namespace + " >");
                     str_divHTML = str_divHTML.Replace("name=\" ", "name=\""); // This line is a bug repairing because a name cannot begin by a space
-                    str_divHTML = HttpUtility.HtmlDecode(str_divHTML);
-                    str_divHTML = HttpUtility.HtmlDecode(str_divHTML); //TODO : Superflu ?
-
+                    str_divHTML = str_divHTML.Replace("&nbsp;", " ");
+                    //if(nodeNumber==29)
+                      //  File.WriteAllText(@"C:\temp\str_divHTML.html", str_divHTML);
+                    //str_divHTML = HttpUtility.HtmlDecode(str_divHTML);
+                    //if (nodeNumber == 29)
+                    //    File.WriteAllText(@"C:\temp\str_divHTML2.html", str_divHTML);
+                    // str_divHTML = HttpUtility.HtmlDecode(str_divHTML); //TODO : Superflu ?
+                    // if (nodeNumber == 29)
+                    //      File.WriteAllText(@"C:\temp\str_divHTML3.html", str_divHTML);
                     xmlNode.InnerXml = str_divHTML;
                     nb_ok++;
                 }
