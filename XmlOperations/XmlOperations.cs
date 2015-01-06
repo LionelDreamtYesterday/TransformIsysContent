@@ -18,11 +18,10 @@ namespace TransformIsysContent.XML_Node_Replacement
         private static string xhtml_namespace = "xmlns=\"http://www.w3.org/1999/xhtml\"";
         private static string div_empty = "<div " + xhtml_namespace + " />";
         private static string str_error_message = "<b><u> <span style=\"color: red;\">"
-            + "CAREFUL ! THERE WAS AN ERROR WHEN THIS ITEM WAS IMPORTED INTO INTEGRITY !"
-            + "Please ask your administrator to check the Isys importer logs in order to find the original RTF Content."
-            + "</span></u></b>";
-        private static string div_error = "<div " + xhtml_namespace + ">" + str_error_message + "</div>";
-
+                 + "CAREFUL ! THERE WAS AN ERROR WHEN THIS ITEM WAS IMPORTED INTO INTEGRITY !"
+        +"<br/>" + "Please ask your administrator to check the Isys importer logs in order to find the original RTF Content."
+        +"<br/>" + "The path where a copy has been made is at the following location :"
+        +"<br/>" +"</span></u></b>";
 
         /// <summary>
         /// Create the third argument from the second one.
@@ -32,7 +31,12 @@ namespace TransformIsysContent.XML_Node_Replacement
         /// <param name="outputFilePath">"outputFilePath.xml"</param>
         public static void NodeContentReplacement(string inputFilePath, string outputFilePath)
         {
-            string errorDirectoryPath = Path.GetDirectoryName(outputFilePath) + Path.DirectorySeparatorChar + "error" ;
+            string errorDirectoryPath = Path.GetDirectoryName(outputFilePath) + Path.DirectorySeparatorChar + "errors" ;
+            bool exists = System.IO.Directory.Exists(errorDirectoryPath);
+            if (!exists)
+            {
+                System.IO.Directory.CreateDirectory(errorDirectoryPath);
+            }
             NodeContentReplacement(inputFilePath, outputFilePath, errorDirectoryPath);
         }
 
@@ -137,7 +141,7 @@ namespace TransformIsysContent.XML_Node_Replacement
                 catch (Exception exception)
                 {
                     nb_erreurs++;
-                    String errorPath = errorDirectoryPath + Path.DirectorySeparatorChar + outputFilePath + ".rtf";
+                    String errorPath = errorDirectoryPath + Path.DirectorySeparatorChar + Path.GetFileNameWithoutExtension(outputFilePath) + "-" + nodeNumber + ".rtf";
                     xmlNode.InnerXml = XmlOperations.ElementNotConvertedError(nodeNumber, exception, outputFilePath + ".rtf", errorPath);
                 }
             }
@@ -160,17 +164,30 @@ namespace TransformIsysContent.XML_Node_Replacement
         /// <returns></returns>
         private static string ElementNotConvertedError(int nodeNumber, Exception exception, String filePath, String errorPath)
         {
-            Console.WriteLine("The element number " + nodeNumber + "has not been imported because there was an error.");
+            Console.WriteLine("");
+            Console.WriteLine("The element number " + nodeNumber + " has not been imported because there was an error.");
             Console.WriteLine("The error was: " + exception);
             try
             {
+                // Console.WriteLine("filePath=" + filePath);
+                // Console.WriteLine("errorPath=" + errorPath);
                 File.Copy(filePath, errorPath, true);
-                Console.WriteLine("A copy of the RTF element node was made at this path :" + errorPath);
+                Console.WriteLine("A copy of the RTF element node number " + nodeNumber + " was made at this path :" + errorPath);
             }
             catch(Exception ex)
             {
-                Console.WriteLine("There was a try to save a copy of the RTF element Node but there was an error : " + ex);
+                Console.WriteLine("ERROR: There was a try to save a copy of the RTF element Node but there was an error : " + ex);
             }
+
+            // errorPath
+
+            return divErrorMessage(errorPath);
+        }
+
+        private static string divErrorMessage(String errorPath)
+        {
+            String div_error = "<div " + xhtml_namespace + ">" + str_error_message + errorPath + "</div>";
+
             return div_error;
         }
 
